@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hcp-02-ssh-key
+  namespace: clusters
+data:
+  ssh-publickey: |
+    ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIN7e7WAd600zIMdwj+Puc0OT/aklIjAwAOjdxq7L1zAl deploy@deploy
+    

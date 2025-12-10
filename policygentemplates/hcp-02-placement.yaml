@@ -1,0 +1,10 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PolicyGenerator
+metadata:
+  name: hcp-20-deployment
+placement:
+  clusterSelectors:
+    cloud: hypershift-management
+policySets:
+  - policies:
+      - hcp-20-configuration

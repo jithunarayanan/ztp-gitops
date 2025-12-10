@@ -1,0 +1,79 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: hcp-02-ssh-key
+#   namespace: openshift-gitops
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/your-org/your-repo.git
+#     targetRevision: main
+#     path: 
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: clusters
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: hcp-20-hosted-cluster
+  namespace: openshift-gitops
+  labels:
+    cluster-type: hosted
+    platform: kubevirt
+    managed-by: gitops
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jithunarayanan/ztp-gitops.git
+    targetRevision: main
+    path: hosted-clusters/hcp-20
+    # Kustomize overlays (if using)
+    # kustomize:
+    #   namePrefix: prod-
+    #   commonLabels:
+    #     env: production
+    # Helm charts (if using)
+    # helm:
+    #   valueFiles:
+    #     - values-production.yaml
+    #   parameters:
+    #     - name: cluster.name
+    #       value: hcp-02
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: clusters
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
+    - PrunePropagationPolicy=foreground
+    - RespectIgnoreDifferences=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 5m
+    managedNamespaceMetadata:
+      labels:
+        argocd.argoproj.io/managed-by: openshift-gitops
+        hypershift.openshift.io/cluster: hcp-20
+      annotations:
+        description: "Namespace for HostedCluster hcp-02"
+  ignoreDifferences:
+  - group: hypershift.openshift.io
+    kind: HostedCluster
+    jsonPointers:
+    - /status  # Ignore status field changes
+  - group: hypershift.openshift.io
+    kind: NodePool
+    jsonPointers:
+    - /status

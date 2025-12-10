@@ -1,0 +1,20 @@
+---
+apiVersion: hypershift.openshift.io/v1beta1
+kind: NodePool
+metadata:
+  name: hcp-20-nodepool
+  namespace: clusters
+spec:
+  clusterName: hcp-20
+  replicas: 2
+  platform:
+    type: KubeVirt
+    kubevirt:
+      compute:
+        memory: 8Gi
+        cores: 4
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.18.29-x86_64
+  management:
+    autoRepair: true
+    upgradeType: InPlace
