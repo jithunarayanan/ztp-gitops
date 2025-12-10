@@ -6,20 +6,25 @@ metadata:
   namespace: clusters-hcp-20
 spec:
   release:
-    image: quay.io/openshift-release-dev/ocp-release:4.18.29-x86_64
+    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
   pullSecret:
-    name: hcp-20-pull-secret
+    name: pull-secret  # Must exist as a Secret in 'clusters' namespace
   etcd:
     managed:
       storage:
         persistentVolume:
           storageClassName: ocs-storagecluster-ceph-rbd
+          size: 10Gi
         type: PersistentVolume
   sshKey:
     name: hcp-20-ssh-key
-    key: id_rsa.pub
+    key: ssh-publickey
   networking:
     networkType: OVNKubernetes
+    clusterNetwork:
+    - cidr: 10.132.0.0/14
+    serviceNetwork:
+    - cidr: 172.31.0.0/16
   platform:
     type: KubeVirt
     kubevirt:
