@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: hcp-02-ssh-key
+  name: hcp-20-ssh-key
   namespace: clusters
 data:
   ssh-publickey: |
