@@ -1,3 +1,46 @@
+# ---
+# apiVersion: hypershift.openshift.io/v1beta1
+# kind: HostedCluster
+# metadata:
+#   name: hcp-20
+#   namespace: clusters-hcp-20
+# spec:
+#   release:
+#     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
+#   pullSecret:
+#     name: pull-secret  # Must exist as a Secret in 'clusters' namespace
+#   etcd:
+#     managed:
+#       storage:
+#         persistentVolume:
+#           storageClassName: ocs-storagecluster-ceph-rbd
+#           size: 10Gi
+#         type: PersistentVolume
+#   sshKey:
+#     name: hcp-20-ssh-key
+#     key: ssh-publickey
+#   networking:
+#     networkType: OVNKubernetes
+#     clusterNetwork:
+#     - cidr: 10.132.0.0/14
+#     serviceNetwork:
+#     - cidr: 172.31.0.0/16
+#   platform:
+#     type: KubeVirt
+#     kubevirt:
+#       generateSSHKeys: true
+#   services:
+#     - service: APIServer
+#       servicePublishingStrategy:
+#         type: NodePort
+#     - service: OAuthServer
+#       servicePublishingStrategy:
+#         type: Route
+#     - service: Konnectivity
+#       servicePublishingStrategy:
+#         type: NodePort
+
+
 ---
 apiVersion: hypershift.openshift.io/v1beta1
 kind: HostedCluster
@@ -5,20 +48,18 @@ metadata:
   name: hcp-20
   namespace: clusters-hcp-20
 spec:
+  generateSSHKeys: true 
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
   pullSecret:
-    name: pull-secret  # Must exist as a Secret in 'clusters' namespace
+    name: hcp-20-pull-secret 
   etcd:
     managed:
       storage:
+        volumeType: PersistentVolume
         persistentVolume:
           storageClassName: ocs-storagecluster-ceph-rbd
           size: 10Gi
-        type: PersistentVolume
-  sshKey:
-    name: hcp-20-ssh-key
-    key: ssh-publickey
   networking:
     networkType: OVNKubernetes
     clusterNetwork:
@@ -27,8 +68,7 @@ spec:
     - cidr: 172.31.0.0/16
   platform:
     type: KubeVirt
-    kubevirt:
-      generateSSHKeys: true
+    kubevirt: {} 
   services:
     - service: APIServer
       servicePublishingStrategy:
@@ -38,4 +78,4 @@ spec:
         type: Route
     - service: Konnectivity
       servicePublishingStrategy:
-        type: NodePort
+        type: LoadBalancer

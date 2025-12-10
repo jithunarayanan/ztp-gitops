@@ -14,7 +14,7 @@ spec:
         memory: 8Gi
         cores: 4
   release:
-    image: quay.io/openshift-release-dev/ocp-release:4.18.29-x86_64
+    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
   management:
     autoRepair: true
     upgradeType: InPlace
