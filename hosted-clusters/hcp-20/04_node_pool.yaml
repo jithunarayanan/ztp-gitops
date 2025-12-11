@@ -1,3 +1,4 @@
+---
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
 metadata:
@@ -9,13 +10,14 @@ spec:
   management:
     autoRepair: true
     autoUpdate: false
+    upgradeType: Replace
     replace:
+      strategy: RollingUpdate 
       rollingUpdate:
         maxSurge: 1
         maxUnavailable: 0
-    upgradeType: Replace
-  nodeDrainTimeout: 1h 
-  nodeVolumeDetachTimeout: 1h
+  # nodeDrainTimeout: 1h
+  # nodeVolumeDetachTimeout: 1h
   platform:
     type: KubeVirt
     kubevirt:
@@ -26,6 +28,6 @@ spec:
       networkInterfaceMultiqueue: Enable
       rootVolume:
         persistent:
-          size: 32Gi  
+          size: 32Gi
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
