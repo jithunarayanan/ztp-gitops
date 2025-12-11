@@ -27,7 +27,6 @@ spec:
     name: hcp-20-pull-secret
   sshKey:
     name: hcp-20-ssh-key
-    key: ssh-publickey
   generateSSHKeys: false
   networking:
     networkType: OVNKubernetes
