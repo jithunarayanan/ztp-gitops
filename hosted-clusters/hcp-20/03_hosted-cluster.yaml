@@ -1,81 +1,55 @@
-# ---
-# apiVersion: hypershift.openshift.io/v1beta1
-# kind: HostedCluster
-# metadata:
-#   name: hcp-20
-#   namespace: clusters-hcp-20
-# spec:
-#   release:
-#     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
-#   pullSecret:
-#     name: pull-secret  # Must exist as a Secret in 'clusters' namespace
-#   etcd:
-#     managed:
-#       storage:
-#         persistentVolume:
-#           storageClassName: ocs-storagecluster-ceph-rbd
-#           size: 10Gi
-#         type: PersistentVolume
-#   sshKey:
-#     name: hcp-20-ssh-key
-#     key: ssh-publickey
-#   networking:
-#     networkType: OVNKubernetes
-#     clusterNetwork:
-#     - cidr: 10.132.0.0/14
-#     serviceNetwork:
-#     - cidr: 172.31.0.0/16
-#   platform:
-#     type: KubeVirt
-#     kubevirt:
-#       generateSSHKeys: true
-#   services:
-#     - service: APIServer
-#       servicePublishingStrategy:
-#         type: NodePort
-#     - service: OAuthServer
-#       servicePublishingStrategy:
-#         type: Route
-#     - service: Konnectivity
-#       servicePublishingStrategy:
-#         type: NodePort
-
-
----
-apiVersion: hypershift.openshift.io/v1beta1
+apiVersion: v1
 kind: HostedCluster
 metadata:
   name: hcp-20
-  namespace: clusters-hcp-20
+  namespace: clusters
 spec:
-  generateSSHKeys: true 
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
-  pullSecret:
-    name: hcp-20-pull-secret 
+  autoscaling:
+    scaling: ScaleUpAndScaleDown
+  controllerAvailabilityPolicy: HighlyAvailable
+  dns:
+    baseDomain: apps.mcluster1.opra.tech
   etcd:
+    managementType: Managed
     managed:
       storage:
-        volumeType: PersistentVolume
         persistentVolume:
+          size: 8Gi
           storageClassName: ocs-storagecluster-ceph-rbd
-          size: 10Gi
+        type: PersistentVolume
   networking:
-    networkType: OVNKubernetes
     clusterNetwork:
     - cidr: 10.132.0.0/14
+    networkType: OVNKubernetes
     serviceNetwork:
     - cidr: 172.31.0.0/16
+  olmCatalogPlacement: management
   platform:
+    kubevirt:
+      baseDomainPassthrough: true
     type: KubeVirt
-    kubevirt: {} 
+  pullSecret:
+    name: hcp-20-pull-secret
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
+  secretEncryption:
+    aescbc:
+      activeKey:
+        name: hcp-20-etcd-encryption-key
+    type: aescbc
   services:
-    - service: APIServer
-      servicePublishingStrategy:
-        type: NodePort
-    - service: OAuthServer
-      servicePublishingStrategy:
-        type: Route
-    - service: Konnectivity
-      servicePublishingStrategy:
-        type: LoadBalancer
+  - service: APIServer
+    servicePublishingStrategy:
+      type: LoadBalancer
+  - service: Ignition
+    servicePublishingStrategy:
+      type: Route
+  - service: Konnectivity
+    servicePublishingStrategy:
+      type: Route
+  - service: OAuthServer
+    servicePublishingStrategy:
+      type: Route
+  sshKey:
+    name: hcp-20-ssh-key
+    key: ssh-publickey
