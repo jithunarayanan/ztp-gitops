@@ -11,7 +11,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/jithunarayanan/ztp-gitops.git
-    targetRevision: main
+    targetRevision: test
     path: hosted-clusters/hcp-20
     # Kustomize overlays (if using)
     # kustomize:
