@@ -5,6 +5,7 @@ metadata:
   namespace: clusters
 spec:
   clusterName: hcp-20
+  replicas: 3
   management:
     autoRepair: true
     autoUpdate: false
@@ -12,23 +13,19 @@ spec:
       rollingUpdate:
         maxSurge: 1
         maxUnavailable: 0
-      strategy: RollingUpdate
     upgradeType: Replace
-  nodeDrainTimeout: 0s
-  nodeVolumeDetachTimeout: 0s
+  nodeDrainTimeout: 1h 
+  nodeVolumeDetachTimeout: 1h
   platform:
     type: KubeVirt
     kubevirt:
-      attachDefaultNetwork: true
       compute:
         cores: 4
         memory: 8Gi
         qosClass: Burstable
-      # networkInterfaceMultiqueue: Enable
+      networkInterfaceMultiqueue: Enable
       rootVolume:
         persistent:
-          size: 32Gi
-        type: Persistent
+          size: 32Gi  
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
-  replicas: 3
