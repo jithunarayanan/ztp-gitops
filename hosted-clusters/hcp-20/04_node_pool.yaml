@@ -19,12 +19,12 @@ spec:
   platform:
     type: KubeVirt
     kubevirt:
-      # attachDefaultNetwork: true
+      attachDefaultNetwork: true
       compute:
         cores: 4
         memory: 8Gi
         qosClass: Burstable
-      networkInterfaceMultiqueue: Enable
+      # networkInterfaceMultiqueue: Enable
       rootVolume:
         persistent:
           size: 32Gi
