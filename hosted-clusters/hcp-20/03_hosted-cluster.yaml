@@ -5,6 +5,11 @@ metadata:
   name: hcp-20
   namespace: clusters
 spec:
+  autoscaling:
+    scaling: ScaleUpAndScaleDown
+  controllerAvailabilityPolicy: HighlyAvailable
+  dns:
+    baseDomain: apps.mcluster1.opra.tech
   etcd:
     managementType: Managed
     managed:
@@ -14,8 +19,8 @@ spec:
           storageClassName: ocs-storagecluster-ceph-rbd
           size: 10Gi
   platform:
-    kubevirt: {}
     type: KubeVirt
+    kubevirt: {}
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64 # Use full pullspec for production
   pullSecret:
