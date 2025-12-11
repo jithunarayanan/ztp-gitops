@@ -1,42 +1,35 @@
-apiVersion: v1
+---
+apiVersion: hypershift.openshift.io/v1beta1
 kind: HostedCluster
 metadata:
   name: hcp-20
   namespace: clusters
 spec:
-  autoscaling:
-    scaling: ScaleUpAndScaleDown
-  controllerAvailabilityPolicy: HighlyAvailable
-  dns:
-    baseDomain: apps.mcluster1.opra.tech
   etcd:
     managementType: Managed
     managed:
       storage:
+        type: PersistentVolume 
         persistentVolume:
-          size: 8Gi
           storageClassName: ocs-storagecluster-ceph-rbd
-        type: PersistentVolume
-  networking:
-    clusterNetwork:
-    - cidr: 10.132.0.0/14
-    networkType: OVNKubernetes
-    serviceNetwork:
-    - cidr: 172.31.0.0/16
-  olmCatalogPlacement: management
+          size: 10Gi
   platform:
-    kubevirt:
-      baseDomainPassthrough: true
+    kubevirt: {}
     type: KubeVirt
+  release:
+    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64 # Use full pullspec for production
   pullSecret:
     name: hcp-20-pull-secret
-  release:
-    image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
-  # secretEncryption:
-  #   aescbc:
-  #     activeKey:
-  #       name: hcp-20-etcd-encryption-key
-  #   type: aescbc
+  sshKey:
+    name: hcp-20-ssh-key
+    key: ssh-publickey
+  generateSSHKeys: false
+  networking:
+    networkType: OVNKubernetes
+    clusterNetwork:
+    - cidr: 10.132.0.0/14
+    serviceNetwork:
+    - cidr: 172.31.0.0/16
   services:
   - service: APIServer
     servicePublishingStrategy:
@@ -50,6 +43,3 @@ spec:
   - service: OAuthServer
     servicePublishingStrategy:
       type: Route
-  sshKey:
-    name: hcp-20-ssh-key
-    key: ssh-publickey
