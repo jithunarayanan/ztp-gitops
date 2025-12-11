@@ -30,4 +30,4 @@ spec:
         type: Persistent
   release:
     image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
-  replicas: 3
+  replicas: 1
