@@ -33,5 +33,3 @@ items:
     release:
       image: quay.io/openshift-release-dev/ocp-release:4.19.21-x86_64
     replicas: 2
-metadata:
-  resourceVersion: ""
