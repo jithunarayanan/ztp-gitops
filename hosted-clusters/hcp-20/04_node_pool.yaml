@@ -7,6 +7,7 @@ spec:
   clusterName: hcp-20
   management:
     autoRepair: true
+    autoUpdate: false
     replace:
       rollingUpdate:
         maxSurge: 1
@@ -18,7 +19,7 @@ spec:
   platform:
     type: KubeVirt
     kubevirt:
-      attachDefaultNetwork: true
+      # attachDefaultNetwork: true
       compute:
         cores: 4
         memory: 8Gi
