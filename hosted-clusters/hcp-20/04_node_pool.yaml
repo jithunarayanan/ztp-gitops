@@ -2,7 +2,7 @@
 apiVersion: hypershift.openshift.io/v1beta1
 kind: NodePool
 metadata:
-  name: hcp-02
+  name: hcp-20
   namespace: clusters
   annotations:
     hypershift.openshift.io/nodepool-supports-kubevirt-topology-spread-constraints: "true"
